@@ -14,6 +14,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     <body>
         <div id="app">
             <h1>Text List</h1>
+            <!-- acusa erro p v-model/for é variavel de view, náo de html -->
             <input type="text" v-model="newItem" />
             <button @click="add()">+</button>
             <ul>
@@ -29,20 +30,27 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
           createApp({
             data() {
               return {
+                  //objeto para guardar lista de itens
                   items: [],
+                  //objeto para amarzenar item novo
                   newItem: ''
               };
             }, 
             async created(){
                 await this.fetchData();
             }, 
+            // bloco para escrever os metodos na instacia view
             methods: {
+                
                 async fetchData(newText, indexToRemove){
+                    //declarar url
                     var url = 'list.json';
                     if (newText) url = url + '?add&text='+newText;
                     if (indexToRemove >= 0) url = url + '?remove&i='+indexToRemove;
+                    //le a resposta
                     const response = await fetch(url);
                     const data = await response.json();
+                    //atribuo a lista dos dados como itens dessa minha instancia view
                     this.items = data.list;
                 },
                 add(){
